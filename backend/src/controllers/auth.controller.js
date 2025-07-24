@@ -1,7 +1,7 @@
 import User from "../models/user.model.js";
 
 const authController = {
-  authCallback: async (req, res) => {
+  authCallback: async (req, res, next) => {
     try {
       const { id, firstName, lastName, imageUrl } = req.body;
 
@@ -17,7 +17,7 @@ const authController = {
       return res.status(200).json({ success: true });
     } catch (error) {
       console.log("Error in authCallback", error);
-      return res.status(500).json({ message: "Internal Server Error ", error });
+      next(error);
     }
   },
 };
