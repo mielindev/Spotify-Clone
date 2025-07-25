@@ -6,6 +6,8 @@ const adminRoutes = express.Router();
 
 adminRoutes.use(protectRoute, protectAdmin);
 
+adminRoutes.get("/check", adminController.checkAdmin);
+
 adminRoutes.post("/tracks", adminController.addTrack);
 
 adminRoutes.delete("/tracks/:trackId", adminController.deleteTrack);

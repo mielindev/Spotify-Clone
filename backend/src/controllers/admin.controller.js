@@ -3,6 +3,9 @@ import Album from "../models/album.model.js";
 import Track from "../models/track.model.js";
 
 const adminController = {
+  checkAdmin: async (req, res, next) => {
+    return res.status(200).json({ admin: true });
+  },
   addTrack: async (req, res, next) => {
     try {
       if (!req.files || !req.files.audioFile || !req.files.imageUrl) {

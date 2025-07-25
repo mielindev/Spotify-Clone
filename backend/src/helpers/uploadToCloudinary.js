@@ -1,4 +1,4 @@
-import cloudinary from "../libs/cloudinary";
+import cloudinary from "../libs/cloudinary.js";
 
 export const uploadToCloudinary = async (file) => {
   try {
