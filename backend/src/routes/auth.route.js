@@ -3,6 +3,6 @@ import authController from "../controllers/auth.controller.js";
 
 const authRoutes = express.Router();
 
-authRoutes.get("/", authController.authCallback);
+authRoutes.post("/callback", authController.authCallback);
 
 export default authRoutes;
