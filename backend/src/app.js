@@ -1,6 +1,7 @@
 import express from "express";
 import { config } from "dotenv";
 import path from "path";
+import cors from "cors";
 import { clerkMiddleware } from "@clerk/express";
 import fileUpload from "express-fileupload";
 
@@ -19,6 +20,12 @@ const __dirname = path.resolve();
 
 app.use(clerkMiddleware());
 app.use(express.json());
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
 app.use(
   fileUpload({
     useTempFiles: true,
