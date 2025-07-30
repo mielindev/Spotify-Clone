@@ -53,7 +53,7 @@ const AlbumPage = () => {
             <div className="px-6 pb-4 flex items-center gap-6">
               <Button
                 size={"icon"}
-                className="w-14 h-14 rounded-full bg-emerald-500 hover:bg-emerald-400 hover:scale-105 transition-all"
+                className="w-14 h-14 rounded-full bg-green-500 hover:bg-green-400 hover:scale-105 transition-all"
               >
                 <Play className="w-7 h-7 text-black" />
               </Button>
