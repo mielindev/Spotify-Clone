@@ -1,5 +1,6 @@
 import FeaturedGridSkeleton from "../_skeletons/FeaturedGridSkeleton";
 import type { Track } from "@/types";
+import PlayButton from "./PlayButton";
 
 type FeaturedSectionProps = {
   isLoading: boolean;
@@ -31,6 +32,8 @@ const FeaturedSection = ({
             <p className="font-medium truncate">{track.title}</p>
             <p className="text-sm text-zinc-400 truncate">{track.artist}</p>
           </div>
+
+          <PlayButton track={track} />
         </div>
       ))}
     </div>

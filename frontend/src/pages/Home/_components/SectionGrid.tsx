@@ -1,6 +1,7 @@
 import type { Track } from "@/types";
 import SectionGridSkeleton from "../_skeletons/SectionGridSkeleton";
 import { Button } from "@/components/ui/button";
+import PlayButton from "./PlayButton";
 
 type SectionGridProps = {
   title: string;
@@ -26,9 +27,9 @@ const SectionGrid = ({ title, tracks, isLoading }: SectionGridProps) => {
         {tracks.map((track) => (
           <div
             key={track._id}
-            className="bg-zinc-800/40 p-4 rounded-md hover:bg-zinc-700/40 transition-all group cursor-pointer"
+            className="relative bg-zinc-800/40 p-4 rounded-md hover:bg-zinc-700/40 transition-all group cursor-pointer"
           >
-            <div className="relative mb-4">
+            <div className="mb-4">
               <div className="aspect-square rounded-md shadow-lg overflow-hidden">
                 <img
                   src={track.imageUrl}
@@ -39,6 +40,7 @@ const SectionGrid = ({ title, tracks, isLoading }: SectionGridProps) => {
             </div>
             <h3 className="font-medium mb-2 truncate">{track.title}</h3>
             <p className="text-sm text-zinc-400 truncate">{track.artist}</p>
+            <PlayButton track={track} />
           </div>
         ))}
       </div>
