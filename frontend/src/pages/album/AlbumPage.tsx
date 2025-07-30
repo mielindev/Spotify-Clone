@@ -1,20 +1,38 @@
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import useMusicStore from "@/store/useMusicStore";
+import usePlayerStore from "@/store/usePlayerStore";
 import { formatDuration } from "@/utils";
-import { Clock, Play } from "lucide-react";
+import { Clock, Pause, Play } from "lucide-react";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 const AlbumPage = () => {
   const { albumId } = useParams();
   const { getAlbumById, currentAlbum, isLoading } = useMusicStore();
-
+  const { currentTrack, isPlaying, playAlbum, togglePlay } = usePlayerStore();
   useEffect(() => {
     if (albumId) getAlbumById(albumId);
   }, [albumId, getAlbumById]);
 
   if (isLoading) return <div>Loading...</div>;
+
+  const handlePlayAlbum = () => {
+    if (!currentAlbum) return;
+    const isCurrentTrackPlaying = currentAlbum?.tracks.some(
+      (t) => t._id === currentTrack?._id
+    );
+
+    if (isCurrentTrackPlaying) togglePlay();
+    else {
+      playAlbum(currentAlbum?.tracks, 0);
+    }
+  };
+
+  const handlePlayTrack = (index: number) => {
+    if (!currentAlbum) return;
+    playAlbum(currentAlbum?.tracks, index);
+  };
 
   return (
     <div className="h-full">
@@ -52,10 +70,18 @@ const AlbumPage = () => {
             {/* Play Button */}
             <div className="px-6 pb-4 flex items-center gap-6">
               <Button
+                onClick={handlePlayAlbum}
                 size={"icon"}
                 className="w-14 h-14 rounded-full bg-green-500 hover:bg-green-400 hover:scale-105 transition-all"
               >
-                <Play className="w-7 h-7 text-black" />
+                {isPlaying &&
+                currentAlbum?.tracks.some(
+                  (t) => t._id === currentTrack?._id
+                ) ? (
+                  <Pause className="w-7 h-7 text-black" />
+                ) : (
+                  <Play className="w-7 h-7 text-black" />
+                )}
               </Button>
             </div>
 
@@ -74,14 +100,26 @@ const AlbumPage = () => {
               <div className="px-6">
                 <div className="space-y-2 py-4">
                   {currentAlbum?.tracks.map((track, idx) => {
+                    const isCurrentTrack = currentTrack?._id === track._id;
                     return (
                       <div
+                        onClick={() => handlePlayTrack(idx)}
                         key={track._id}
-                        className="grid grid-cols-[16px_4fr_2fr_1fr] gap-4 px-4 py-2 text-sm text-zinc-400 border-b border-white/5 rounded-md group cursor-pointer"
+                        className="grid grid-cols-[16px_4fr_2fr_1fr] gap-4 px-4 py-2 text-sm text-zinc-400 border-b border-white/5 rounded-md group cursor-pointer hover:bg-zinc-900/70"
                       >
                         <div className="flex items-center justify-start">
-                          <span className="group-hover:hidden">{idx + 1}</span>
-                          <Play className="w-4 h-4 hidden group-hover:block" />
+                          {isCurrentTrack && isPlaying ? (
+                            <div className="text-md text-green-500">
+                              &#9835;
+                            </div>
+                          ) : (
+                            <>
+                              <span className="group-hover:hidden">
+                                {idx + 1}
+                              </span>
+                              <Play className="w-4 h-4 hidden group-hover:block" />
+                            </>
+                          )}
                         </div>
 
                         <div className="flex items-center gap-3">
