@@ -42,7 +42,7 @@ const trackController = {
       const tracks = await Track.aggregate([
         {
           $sample: {
-            size: 6,
+            size: 4,
           },
         },
         {
@@ -65,7 +65,28 @@ const trackController = {
 
   getTrendingTracks: async (req, res, next) => {
     try {
-    } catch (error) {}
+      const tracks = await Track.aggregate([
+        {
+          $sample: {
+            size: 4,
+          },
+        },
+        {
+          $project: {
+            _id: 1,
+            title: 1,
+            artist: 1,
+            imageUrl: 1,
+            audioUrl: 1,
+          },
+        },
+      ]);
+
+      return res.status(200).json(tracks);
+    } catch (error) {
+      console.log("Error in getFeaturedTracks", error);
+      next(error);
+    }
   },
 };
 
