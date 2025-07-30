@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { SignedIn } from "@clerk/clerk-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import PlaylistSkeleton from "../skeletons/PlaylistSkeleton";
+import PlaylistSkeleton from "../_skeletons/PlaylistSkeleton";
 import useMusicStore from "@/store/useMusicStore";
 import { useEffect } from "react";
 

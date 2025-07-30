@@ -1,6 +1,6 @@
 import useChatStore from "@/store/useChatStore";
 import { useEffect } from "react";
-import LoginPrompt from "./_LoginPrompt";
+import LoginPrompt from "./LoginPrompt";
 import { useUser } from "@clerk/clerk-react";
 import { Music, Users } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
