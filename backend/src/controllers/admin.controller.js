@@ -8,14 +8,14 @@ const adminController = {
   },
   addTrack: async (req, res, next) => {
     try {
-      if (!req.files || !req.files.audioFile || !req.files.imageUrl) {
+      if (!req.files || !req.files.audioUrl || !req.files.imageUrl) {
         return res
           .status(400)
           .json({ message: "Please upload both audio and image files" });
       }
 
       const { title, artist, album, duration } = req.body;
-      const audioFile = req.files.audioFile;
+      const audioFile = req.files.audioUrl;
       const imageFile = req.files.imageUrl;
 
       const audioUrl = await uploadToCloudinary(audioFile);
