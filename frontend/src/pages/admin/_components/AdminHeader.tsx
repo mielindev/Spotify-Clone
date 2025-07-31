@@ -1,0 +1,23 @@
+import { UserButton } from "@clerk/clerk-react";
+import { Link } from "react-router-dom";
+
+const AdminHeader = () => {
+  return (
+    <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center gap-4">
+        <Link to={"/"} className="rounded-full">
+          <img src="/spotify_logo.png" alt="Spotify Logo" className="size-10" />
+        </Link>
+        <div>
+          <h1 className="text-3xl font-bold">Music Managemnet</h1>
+          <p className="text-zinc-400 mt-1">Manage your music catalog</p>
+          <p></p>
+        </div>
+      </div>
+
+      <UserButton />
+    </div>
+  );
+};
+
+export default AdminHeader;
