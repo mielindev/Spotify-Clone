@@ -28,8 +28,10 @@ const FeaturedSection = ({
             alt={track.title}
             className="w-16 sm:w-20 h-16 sm:h-20 object-cover shrink-0"
           />
-          <div className="flex-1 p-4">
-            <p className="font-medium truncate">{track.title}</p>
+          <div className="flex-1 p-4 ">
+            <p className="font-medium line-clamp-2" title={track.title}>
+              {track.title}
+            </p>
             <p className="text-sm text-zinc-400 truncate">{track.artist}</p>
           </div>
 
