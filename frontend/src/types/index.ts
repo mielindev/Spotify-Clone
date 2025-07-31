@@ -5,7 +5,7 @@ export interface Track {
   imageUrl: string;
   audioUrl: string;
   duration: number;
-  album: string;
+  album: string | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -28,4 +28,11 @@ export interface User {
   clerkId: string;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface Stats {
+  totalTracks: number;
+  totalArtists: number;
+  totalAlbums: number;
+  totalUsers: number;
 }
