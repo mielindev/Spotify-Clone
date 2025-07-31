@@ -52,9 +52,9 @@ const LeftSideBar = () => {
       </div>
 
       {/* Library Section */}
-      <div className="flex-1 rounded-lg bg-zinc-900 p-6">
+      <div className="flex-1 rounded-lg bg-zinc-900 p-3">
         <div className="flex items-center mb-4">
-          <div className="flex items-center text-white px-2">
+          <div className="flex items-center text-white px-4">
             <Library className="size-5 mr-2" />
             <span className="hidden md:inline">Playlists</span>
           </div>

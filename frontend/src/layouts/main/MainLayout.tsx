@@ -7,9 +7,21 @@ import { Outlet } from "react-router-dom";
 import LeftSideBar from "./_components/LeftSideBar";
 import FriendsActivity from "./_components/FriendsActivity";
 import AudioPlayer from "./_components/AudioPlayer";
+import PlaybackControls from "./_components/PlaybackControls";
+import { useEffect, useState } from "react";
 
 const MainLayout = () => {
-  const isMobile = false;
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkIsMobile = () => setIsMobile(window.innerWidth <= 768);
+
+    checkIsMobile();
+
+    window.addEventListener("resize", checkIsMobile);
+
+    return () => window.removeEventListener("resize", checkIsMobile);
+  }, []);
   return (
     <div className="h-screen bg-black text-white flex flex-col">
       <ResizablePanelGroup
@@ -18,9 +30,9 @@ const MainLayout = () => {
       >
         <AudioPlayer />
         <ResizablePanel
-          defaultSize={isMobile ? 10 : 20}
+          defaultSize={20}
           minSize={isMobile ? 0 : 10}
-          maxSize={20}
+          maxSize={30}
         >
           <LeftSideBar />
         </ResizablePanel>
@@ -28,16 +40,23 @@ const MainLayout = () => {
         <ResizablePanel defaultSize={isMobile ? 80 : 60}>
           <Outlet />
         </ResizablePanel>
-        <ResizableHandle className="w-2 bg-black rounded-lg transition-colors" />
-        <ResizablePanel
-          defaultSize={isMobile ? 10 : 20}
-          minSize={0}
-          maxSize={20}
-          collapsedSize={0}
-        >
-          <FriendsActivity />
-        </ResizablePanel>
+
+        {!isMobile && (
+          <>
+            <ResizableHandle className="w-2 bg-black rounded-lg transition-colors" />
+            <ResizablePanel
+              defaultSize={20}
+              minSize={0}
+              maxSize={25}
+              collapsedSize={0}
+            >
+              <FriendsActivity />
+            </ResizablePanel>
+          </>
+        )}
       </ResizablePanelGroup>
+
+      <PlaybackControls />
     </div>
   );
 };
