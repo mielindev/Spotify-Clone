@@ -11,7 +11,9 @@ const FriendsActivity = () => {
   const { getAllUsers, users } = useChatStore();
   const { user: loggedInUser } = useUser();
   useEffect(() => {
-    if (loggedInUser) getAllUsers();
+    if (loggedInUser) {
+      getAllUsers();
+    }
   }, [getAllUsers, loggedInUser]);
 
   const isPlaying = true;

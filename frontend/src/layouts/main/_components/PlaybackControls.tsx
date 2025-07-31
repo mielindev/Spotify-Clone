@@ -22,7 +22,6 @@ const PlaybackControls = () => {
   const [duration, setDuration] = useState(0);
   const { currentTrack, isPlaying, playNext, playPrevious, togglePlay } =
     usePlayerStore();
-  console.log("👉 ~ PlaybackControls ~ currentTrack:", currentTrack);
 
   const audioRef = useRef<HTMLAudioElement>(null);
 

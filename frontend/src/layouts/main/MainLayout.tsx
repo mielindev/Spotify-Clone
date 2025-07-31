@@ -32,7 +32,7 @@ const MainLayout = () => {
         <ResizablePanel
           defaultSize={20}
           minSize={isMobile ? 0 : 10}
-          maxSize={30}
+          maxSize={20}
         >
           <LeftSideBar />
         </ResizablePanel>
@@ -47,7 +47,7 @@ const MainLayout = () => {
             <ResizablePanel
               defaultSize={20}
               minSize={0}
-              maxSize={25}
+              maxSize={20}
               collapsedSize={0}
             >
               <FriendsActivity />
