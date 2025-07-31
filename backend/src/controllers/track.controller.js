@@ -26,6 +26,7 @@ const trackController = {
             artist: 1,
             imageUrl: 1,
             audioUrl: 1,
+            duration: 1,
           },
         },
       ]);
