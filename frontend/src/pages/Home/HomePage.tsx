@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import FeaturedSection from "./_components/FeaturedSection";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import SectionGrid from "./_components/SectionGrid";
+import usePlayerStore from "@/store/usePlayerStore";
 
 const HomePage = () => {
   const {
@@ -17,11 +18,18 @@ const HomePage = () => {
     error,
   } = useMusicStore();
 
+  const { initializeQueue } = usePlayerStore();
+
   useEffect(() => {
     getFeaturedTracks();
     getMadeForYouTracks();
     getTrendingTracks();
   }, [getFeaturedTracks, getMadeForYouTracks, getTrendingTracks]);
+
+  useEffect(() => {
+    const tracks = [...featuredTracks, ...madeForYouTracks, ...trendingTracks];
+    initializeQueue(tracks);
+  }, [initializeQueue, featuredTracks, madeForYouTracks, trendingTracks]);
   return (
     <div className="rounded-md overflow-hidden h-full bg-gradient-to-b from-zinc-800 to-zinc-900">
       <TopBar />
