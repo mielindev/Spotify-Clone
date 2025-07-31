@@ -20,9 +20,9 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       try {
         const token = await getToken();
         if (token) {
-          checkIsAdmin();
+          updateApiToken(token);
+          await checkIsAdmin();
         }
-        updateApiToken(token);
       } catch (error: any) {
         console.log("Error in initalizeAuth", error);
       } finally {
