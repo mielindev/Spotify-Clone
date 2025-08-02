@@ -35,7 +35,7 @@ interface NewTrack {
 }
 
 const AddTrackModal = () => {
-  const { albums } = useMusicStore();
+  const { albums, getAllTracks } = useMusicStore();
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -75,6 +75,14 @@ const AddTrackModal = () => {
         },
       });
 
+      await getAllTracks();
+
+      toast.success("Track added successfully");
+    } catch (error: any) {
+      toast.error("Failed to add track" + error.response.data.message);
+    } finally {
+      setIsLoading(false);
+      setOpen(false);
       setNewTrack({
         title: "",
         artist: "",
@@ -86,12 +94,6 @@ const AddTrackModal = () => {
         audioUrl: null,
         imageUrl: null,
       });
-
-      toast.success("Track added successfully");
-    } catch (error: any) {
-      toast.error("Failed to add track" + error.response.data.message);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -102,7 +104,7 @@ const AddTrackModal = () => {
         <p className="text-md font-bold">Add Track</p>
       </DialogTrigger>
 
-      <DialogContent className="bg-zinc-900 border-zinc-700 max-h-[80vh] overflow-auto ">
+      <DialogContent className="bg-zinc-900 border-zinc-700 max-h-[90vh] overflow-auto ">
         <DialogHeader>
           <DialogTitle>Add New Track</DialogTitle>
           <DialogDescription>
