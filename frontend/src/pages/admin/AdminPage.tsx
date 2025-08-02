@@ -7,18 +7,23 @@ import TracksTabContent from "./_components/TracksTabContent";
 import AlbumsTabContent from "./_components/AlbumsTabContent";
 import useMusicStore from "@/store/useMusicStore";
 import { useEffect } from "react";
+import { useUser } from "@clerk/clerk-react";
 
 const AdminPage = () => {
   const { isAdmin, isLoading } = useAuthStore();
   const { getStats, getAllTracks, getAllAlbums } = useMusicStore();
+  const { user } = useUser();
 
   useEffect(() => {
-    getStats();
-    getAllTracks();
-    getAllAlbums();
-  }, [getStats, getAllTracks, getAllAlbums]);
+    if (user) {
+      getStats();
+      getAllTracks();
+      getAllAlbums();
+    }
+  }, [getStats, getAllTracks, getAllAlbums, user]);
 
   if (!isLoading && !isAdmin) return <div>Unauthorized Access</div>;
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-zinc-900 via-zinc-900 to-black text-zinc-100 p-8">
       <AdminHeader />
