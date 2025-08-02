@@ -132,7 +132,7 @@ const useMusicStore = create<MusicStore>((set, get) => ({
       const res = await axiosInstance.delete(`/admin/tracks/${trackId}`);
 
       // get stats after removing track
-      get().getStats();
+      await get().getStats();
       set((state) => ({
         tracks: state.tracks.filter((track) => track._id !== trackId),
       }));
@@ -147,18 +147,20 @@ const useMusicStore = create<MusicStore>((set, get) => ({
   removeAlbum: async (albumId) => {
     set({ isSongLoading: true });
     try {
-      const res = await axiosInstance.delete(`/albums/${albumId}`);
+      const res = await axiosInstance.delete(`admin/albums/${albumId}`);
       set((state) => ({
         albums: state.albums.filter((album) => album._id !== albumId),
         tracks: state.tracks.map((track) =>
-          track.album === state.albums.find((a) => a._id === albumId)?._id
-            ? { ...track, album: null }
-            : track
+          track.album === albumId ? { ...track, album: null } : track
         ),
       }));
+
+      // get stats after removing album
+      await get().getStats();
+
       toast.success(res.data.message || "Album removed successfully");
     } catch (error: any) {
-      toast.error(error.response.data.message || "Failed to remove album");
+      toast.error(error?.response?.data?.message || "Failed to remove album");
     } finally {
       set({ isSongLoading: false });
     }
