@@ -12,9 +12,9 @@ import trackRoutes from "./routes/track.route.js";
 import albumRoutes from "./routes/album.route.js";
 import statRoutes from "./routes/stat.route.js";
 import connectToDB from "./libs/db.js";
+import { server, app } from "./libs/socket.js";
 
 config();
-const app = express();
 const PORT = process.env.PORT || 5005;
 const __dirname = path.resolve();
 
@@ -53,7 +53,7 @@ app.use((err, res) => {
   });
 });
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   connectToDB();
   console.log(`Server is running on port ${PORT}`);
 });
