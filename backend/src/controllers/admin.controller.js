@@ -1,3 +1,4 @@
+import { deleteFromCloudinary } from "../helpers/deleteFromCloudinary.js";
 import { uploadToCloudinary } from "../helpers/uploadToCloudinary.js";
 import Album from "../models/album.model.js";
 import Track from "../models/track.model.js";
@@ -53,9 +54,25 @@ const adminController = {
 
       const track = await Track.findById(trackId);
 
+      if (!track) {
+        return res.status(404).json({ message: "Track not found" });
+      }
+
+      const deletePromises = [];
+
+      if (track.imageUrl) {
+        deletePromises.push(deleteFromCloudinary(track.imageUrl, "image"));
+      }
+
+      if (track.audioUrl) {
+        deletePromises.push(deleteFromCloudinary(track.audioUrl, "video"));
+      }
+
+      await Promise.all(deletePromises);
+
       if (track.album) {
         await Album.findByIdAndUpdate(track.album, {
-          $push: { tracks: track._id },
+          $pull: { tracks: track._id },
         });
       }
 
@@ -97,7 +114,11 @@ const adminController = {
   deleteAlbum: async (req, res, next) => {
     try {
       const { albumId } = req.params;
-      await Track.deleteMany({ album: albumId });
+
+      if (!albumId) {
+        return res.status(400).json({ message: "Album ID is required" });
+      }
+      await Track.updateMany({ album: albumId }, { $set: { album: null } });
       await Album.findByIdAndDelete(albumId);
       return res.status(200).json({ message: "Album deleted successfully" });
     } catch (error) {
