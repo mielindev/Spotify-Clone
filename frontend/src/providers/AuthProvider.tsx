@@ -1,5 +1,6 @@
 import { axiosInstance } from "@/lib/axios";
 import useAuthStore from "@/store/useAuthStore";
+import useChatStore from "@/store/useChatStore";
 import { useAuth } from "@clerk/clerk-react";
 import { Loader } from "lucide-react";
 import React, { useEffect, useState } from "react";
@@ -11,9 +12,10 @@ const updateApiToken = (token: string | null) => {
 };
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const { getToken } = useAuth();
+  const { getToken, userId } = useAuth();
   const [loading, setLoading] = useState(false);
   const { checkIsAdmin } = useAuthStore();
+  const { initializeSocket, disconnectSocket } = useChatStore();
   useEffect(() => {
     const initalizeAuth = async () => {
       setLoading(true);
@@ -22,6 +24,11 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         if (token) {
           updateApiToken(token);
           await checkIsAdmin();
+          // Init the socket connection
+
+          if (userId) {
+            initializeSocket(userId);
+          }
         }
       } catch (error: any) {
         console.log("Error in initalizeAuth", error);
@@ -31,7 +38,10 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     initalizeAuth();
-  }, [getToken, checkIsAdmin]);
+
+    // Clean up the socket connection on unmount
+    return () => disconnectSocket();
+  }, [getToken, checkIsAdmin, initializeSocket, userId, disconnectSocket]);
 
   if (loading)
     return (
