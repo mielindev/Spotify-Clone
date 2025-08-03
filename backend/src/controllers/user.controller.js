@@ -21,14 +21,14 @@ const userController = {
       const { userId: senderId } = req.auth();
       const { userId: receiverId } = req.params;
 
-      const message = await Message.find({
+      const messages = await Message.find({
         $or: [
           { senderId: senderId, receiverId: receiverId },
           { senderId: receiverId, receiverId: senderId },
         ],
       }).sort({ createdAt: 1 });
 
-      return res.status(200).json(message);
+      return res.status(200).json(messages);
     } catch (error) {
       console.log("Error in getMessages", error);
       next(error);

@@ -9,7 +9,7 @@ const authController = {
 
       if (!user) {
         await User.create({
-          fullName: `${firstName} ${lastName}`,
+          fullName: `${firstName || ""} ${lastName || ""}`,
           imageUrl,
           clerkId: id,
         });
