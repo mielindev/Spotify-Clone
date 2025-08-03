@@ -20,26 +20,25 @@ io.on("connection", (socket) => {
   console.log("User connected", socket.id);
 
   //   Handle user connection
-  socket.on("userConnected", (userId) => {
+  socket.on("user_connected", (userId) => {
     userSockets.set(userId, socket.id);
     userActivities.set(userId, "Idle");
 
-    io.emit("userConnected", userId);
-    socket.emit("userOnlines", Array.from(userSockets.keys()));
+    io.emit("user_connected", userId);
+    socket.emit("users_online", Array.from(userSockets.keys()));
 
-    io.emit("userActivity", Array.from(userActivities.entries()));
+    io.emit("activities", Array.from(userActivities.entries()));
   });
 
   //   Handle user activity
-  socket.on("updateActivity", ({ userId, activity }) => {
-    console.log("updateActivityUpdated", userId, activity);
+  socket.on("update_activity", ({ userId, activity }) => {
     userActivities.set(userId, activity);
 
-    io.emit("userActivitiesUpdated", { userId, activity });
+    io.emit("activities_updated", { userId, activity });
   });
 
   //   Handle user send message
-  socket.on("sendMessage", async (data) => {
+  socket.on("send_message", async (data) => {
     try {
       const { senderId, receiverId, content } = data;
 
@@ -52,12 +51,13 @@ io.on("connection", (socket) => {
       //   Send realtime message, if they're online
       const receiverSocketId = userSockets.get(receiverId);
       if (receiverSocketId) {
-        io.to(receiverSocketId).emit("newMessage", message);
+        io.to(receiverSocketId).emit("receive_message", message);
       }
 
-      socket.emit("messageSent", message);
+      socket.emit("message_sent", message);
     } catch (error) {
-      socket.emit("messageError", error.message);
+      console.error("Error in send_message", error);
+      socket.emit("message_error", error.message);
     }
   });
 
@@ -71,8 +71,9 @@ io.on("connection", (socket) => {
         userActivities.delete(userId);
         break;
       }
-
-      io.emit("userDisconnected", disconnectedUserId);
+    }
+    if (disconnectedUserId) {
+      io.emit("user_disconnected", disconnectedUserId);
     }
   });
 });
