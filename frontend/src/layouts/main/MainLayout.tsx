@@ -9,6 +9,7 @@ import FriendsActivity from "./_components/FriendsActivity";
 import AudioPlayer from "./_components/AudioPlayer";
 import PlaybackControls from "./_components/PlaybackControls";
 import { useEffect, useState } from "react";
+import TopBar from "@/components/TopBar";
 
 const MainLayout = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -24,6 +25,8 @@ const MainLayout = () => {
   }, []);
   return (
     <div className="h-screen bg-black text-white flex flex-col">
+      <TopBar />
+
       <ResizablePanelGroup
         direction="horizontal"
         className="flex-1 flex h-full overflow-hidden p-2"
@@ -31,7 +34,7 @@ const MainLayout = () => {
         <AudioPlayer />
         <ResizablePanel
           defaultSize={20}
-          minSize={isMobile ? 0 : 10}
+          minSize={isMobile ? 0 : 15}
           maxSize={20}
         >
           <LeftSideBar />
