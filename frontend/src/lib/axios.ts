@@ -5,7 +5,10 @@ const clerk = new Clerk(import.meta.env.VITE_CLERK_PUBLISHABLE_KEY);
 let isLoaded = false;
 
 export const axiosInstance = axios.create({
-  baseURL: "http://localhost:5005/api",
+  baseURL:
+    import.meta.env.MODE === "development"
+      ? "http://localhost:5005/api"
+      : "/api",
 });
 
 axiosInstance.interceptors.request.use(async (config) => {
