@@ -66,7 +66,7 @@ app.use("/api/tracks", trackRoutes);
 app.use("/api/albums", albumRoutes);
 app.use("/api/stats", statRoutes);
 
-app.use((err, res) => {
+app.use((err, res, next, req) => {
   return res.status(500).json({
     message:
       process.env.NODE_ENV === "production"
@@ -76,9 +76,9 @@ app.use((err, res) => {
 });
 
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../frontend/dist")));
+  app.use(express.static(path.join(__dirname, "./frontend/dist")));
   app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
+    res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
   });
 }
 
