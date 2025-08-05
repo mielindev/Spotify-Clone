@@ -13,6 +13,8 @@ import albumRoutes from "./routes/album.route.js";
 import statRoutes from "./routes/stat.route.js";
 import connectToDB from "./libs/db.js";
 import { server, app } from "./libs/socket.js";
+import cron from "node-cron";
+import fs from "fs";
 
 config();
 const PORT = process.env.PORT || 5005;
@@ -36,6 +38,26 @@ app.use(
     },
   })
 );
+
+const tempDir = path.join(process.cwd(), "tmp");
+cron.schedule("0 * * * *", () => {
+  if (fs.existsSync(tempDir)) {
+    fs.readdir(tempDir, (err, files) => {
+      if (err) {
+        console.log("Error reading temp directory", err);
+        return;
+      }
+
+      for (const file of files) {
+        fs.unlink(path.join(tempDir, file), (err) => {
+          if (err) {
+            console.log("Error deleting file", err);
+          }
+        });
+      }
+    });
+  }
+});
 
 app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
